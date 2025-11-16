@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ADEMO MERCH</title>
+
+<style>
+/* -------------------------
+   VARIABLES DE TEMA
+------------------------- */
+:root {
+    --bg: #fafafa;
+    --fg: #111;
+    --card-bg: #ffffff;
+    --accent: #d00;
+    --nav-bg: #111;
+    --nav-fg: #ffffff;
+    --muted: #444;
+    --shadow: rgba(0,0,0,0.15);
+}
+
+body.dark {
+    --bg: #111111;
+    --fg: #f5f5f5;
+    --card-bg: #1a1a1a;
+    --accent: #d00;
+    --nav-bg: #000000;
+    --nav-fg: #f5f5f5;
+    --muted: #cccccc;
+    --shadow: rgba(0,0,0,0.6);
+}
+
+/* -------------------------
+   ESTILOS GENERALES
+------------------------- */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+}
+
+.section {
+    max-width: 1200px;
+    margin: 2rem 10px;
+    padding: 0;
+    text-align: left;
+}
+
+/* NAV */
+nav {
+    background: var(--nav-bg);
+    padding: 1rem 10px;
+    color: var(--nav-fg);
+    border-bottom: 3px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+}
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+nav img {
+    height: 40px;
+    border-radius: 6px;
+}
+nav a {
+    color: var(--nav-fg);
+    text-decoration: none;
+    font-weight: bold;
+}
+#themeToggle {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--nav-fg);
+    color: var(--nav-fg);
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+/* TITULOS */
+h1, h2, h3 {
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+}
+
+/* PRODUCTOS */
+.grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.producto {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid #111;
+    box-shadow: 0 0 12px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 10px;
+    animation: productPop .5s ease;
+}
+.producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--accent);
+    transition: .2s;
+}
+.producto img:hover {
+    transform: scale(1.05);
+}
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    background: var(--accent);
+    color: #fff;
+}
+.desc {
+    font-size: .9rem;
+    color: var(--muted);
+}
+
+/* BOTONES */
+.btn {
+    background: #111;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .2s;
+}
+.btn:hover {
+    background: var(--accent);
+}
+
+/* CARRITO */
+#carrito {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    border-top: 4px solid var(--accent);
+    margin-top: 2rem;
+}
+#carrito ul {
+    list-style: none;
+    padding-left: 10px;
+    border-left: 3px solid #111;
+}
+
+/* CONTACTO */
+.contact-wrapper {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.contact-wrapper img {
+    width: 420px;
+    border-radius: 12px;
+    border: 3px solid var(--accent);
+}
+
+/* WHATSAPP */
+#whats {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #25D366;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    z-index: 3000;
+}
+#whats img { width: 32px; }
+
+/* -------------------------
+   BOTÓN INFO + PANEL
+------------------------- */
+#infoBtn {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 28px;
+    border-radius: 50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    box-shadow: 0 0 12px rgba(0,0,0,0.25);
+    z-index: 3100;
+    transition: .25s ease;
+}
+#infoBtn:hover {
+    transform: scale(1.1);
+}
+
+#infoPanel {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 300px;
+    height: 100%;
+    background: var(--card-bg);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.35);
+    padding: 20px;
+    z-index: 4000;
+    transition: right .35s ease;
+    overflow-y: auto;
+}
+#infoPanelContent img {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid var(--accent);
+    margin-bottom: 15px;
+}
+#cerrarPanel {
+    float: right;
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor:pointer;
+}
+
+/* PANEL RESPONSIVO */
+@media(max-width:700px){
+    #infoPanel {
+        width: 85%;
+    }
+}
+
+/* MODAL PRODUCTO */
+#modal {
+    position: fixed;
+    top: 0; left: 0;
+    width:100%; height:100%;
+    background:#000a;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:5000;
+}
+#modal-content {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 420px;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 3rem;
+    padding: 1.5rem 10px;
+    background:#000;
+    color:#ccc;
+}
+
+/* Animaciones */
+@keyframes productPop { from{opacity:0; transform:scale(.9);} to{opacity:1; transform:scale(1);} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <ul>
+        <li><img src="ademologo.jpg" alt="ADEMO"></li>
+        <li><strong>ADEMO MERCH</strong></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <button id="themeToggle">🌙 Modo oscuro</button>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="section">
+    <h1>ADEMO MERCH</h1>
+    <p>Merch solidario y piezas 3D para apoyar a ADEMO.</p>
+</div>
+
+<!-- PRODUCTOS -->
+<div class="section" id="productos">
+    <h2>Productos</h2>
+    <div class="grid" id="listaProductos"></div>
+
+    <h3>Carrito</h3>
+    <div id="carrito">
+        <ul id="itemsCarrito"></ul>
+        <p><strong>Total:</strong> <span id="total">0</span> €</p>
+        <button class="btn" onclick="finalizarCompra()">Finalizar compra</button>
+        <button class="btn" onclick="pagarBizum()">Bizum</button>
+        <button class="btn" onclick="vaciarCarrito()">Vaciar</button>
+    </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="section" id="contacto">
+    <h2>Contacto</h2>
+    <div class="contact-wrapper">
+        <img src="portada-ademo.jpg" alt="ADEMO">
+        <div>
+            <p><strong>ADEMO MERCH</strong> es una iniciativa solidaria que apoya a personas con Esclerosis Múltiple en Huelva.</p>
+            <p>Cada compra ayuda al bienestar de pacientes y familias.</p>
+            <h3>Contacto</h3>
+            <p>📍 Huelva</p>
+            <p>📞 649 16 24 44</p>
+            <button class="btn" onclick="location.href='https://wa.me/34649162444'">WhatsApp</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PRODUCTO -->
+<div id="modal" onclick="cerrarModal()">
+    <div id="modal-content" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- WHATSAPP -->
+<div id="whats" onclick="location.href='https://wa.me/34649162444'">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</div>
+
+<!-- BOTÓN INFO -->
+<div id="infoBtn" onclick="abrirPanel()">ℹ️</div>
+
+<!-- PANEL LATERAL -->
+<div id="infoPanel">
+    <div id="infoPanelContent">
+        <button id="cerrarPanel" onclick="cerrarPanel()">✖</button>
+
+        <img src="ademologo.jpg">
+
+        <h2>Apoya a ADEMO</h2>
+        <p>Cada compra financia terapias y actividades para personas con Esclerosis Múltiple.</p>
+
+        <h3>Horario</h3>
+        <p>Lunes - Viernes<br>9:00 - 14:00</p>
+
+        <h3>Redes sociales</h3>
+        <p><a href="https://www.instagram.com/ademo_huelva/?hl=es" target="_blank">Instagram</a></p>
+        <p><a href="https://www.facebook.com/p/Asociaci%C3%B3n-de-Esclerosis-M%C3%BAltiple-Onubense-100064831445319/?locale=es_ES" target="_blank">Facebook</a></p>
+
+        <button class="btn" style="width:100%;" 
+            onclick="location.href='https://wa.me/34649162444?text=Hola,+quiero+hacer+una+donación+solidaria'">
+            💖 Donar
+        </button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p style="text-align:center;">&copy; 2025 ADEMO MERCH – Proyecto solidario</p>
+</footer>
+
+<!-- JS -->
+<script>
+// PRODUCTOS
+const productos = [
+    {nombre:"Camiseta Beige ADEMO – Unisex", precio:14.99, imagen:"producto1.webp", desc:"Camiseta unisex de algodón beige.", badge:"Nuevo"},
+    {nombre:"Camiseta Blanca ADEMO – Unisex", precio:14.99, imagen:"producto2.png", desc:"Camiseta blanca premium.", badge:"Más vendido"},
+    {nombre:"Set Decorativo Espiral 3D – 4 Piezas", precio:29.90, imagen:"producto3.jpg", desc:"Set de decoración 3D.", badge:""},
+    {nombre:"Casco Protector 3D – Azul", precio:39.90, imagen:"producto4.jpg", desc:"Casco ligero y ventilado.", badge:"Edición limitada"},
+    {nombre:"Figuras Low-Poly – Pack 3", precio:19.90, imagen:"producto5.jpg", desc:"Decoración divertida en 3D.", badge:"Popular"}
+];
+
+let carrito = [];
+
+function pintarProductos(){
+    const cont = document.getElementById("listaProductos");
+    cont.innerHTML = "";
+    productos.forEach((p,i)=>{
+        cont.innerHTML += `
+            <div class="producto">
+                ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+                <img src="${p.imagen}" onclick="verProducto(${i})">
+                <h3>${p.nombre}</h3>
+                <p class="desc">${p.desc}</p>
+                <p class="precio">${p.precio} €</p>
+                <button class="btn" onclick="agregar(${i})">Añadir</button>
+            </div>`;
+    });
+}
+
+function verProducto(i){
+    const p = productos[i];
+    document.getElementById("modal-content").innerHTML = `
+        <img src="${p.imagen}">
+        <h2>${p.nombre}</h2>
+        <p>${p.desc}</p>
+        <p class="precio">${p.precio} €</p>
+        <button class="btn" onclick="agregar(${i}); cerrarModal()">Añadir al carrito</button>
+        <button class="btn" onclick="cerrarModal()">Cerrar</button>
+    `;
+    document.getElementById("modal").style.display = "flex";
+}
+function cerrarModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+function agregar(i){
+    carrito.push(productos[i]);
+    actualizar();
+}
+function actualizar(){
+    let ul = document.getElementById("itemsCarrito");
+    ul.innerHTML = "";
+    let total = 0;
+    carrito.forEach(p=>{
+        ul.innerHTML += `<li>${p.nombre} – ${p.precio} €</li>`;
+        total += p.precio;
+    });
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function vaciarCarrito(){ carrito=[]; actualizar(); }
+function finalizarCompra(){ alert("Pulsa Bizum para pagar."); }
+
+function pagarBizum(){
+    if(carrito.length===0){ alert("El carrito está vacío."); return; }
+    let msg="Hola, quiero realizar este pedido:\n\n";
+    carrito.forEach(p=> msg += `- ${p.nombre} (${p.precio} €)\n`);
+    msg+=`\nTotal: ${document.getElementById("total").innerText} €`;
+    location.href="https://wa.me/34649162444?text="+encodeURIComponent(msg);
+}
+
+/* PANEL LATERAL */
+function abrirPanel(){
+    document.getElementById("infoPanel").style.right = "0";
+}
+function cerrarPanel(){
+    document.getElementById("infoPanel").style.right = "-350px";
+}
+
+/* MODO OSCURO */
+const themeBtn=document.getElementById("themeToggle");
+function aplicarTema(){
+    const t=localStorage.getItem("ademoTheme");
+    if(t==="dark"){ document.body.classList.add("dark"); themeBtn.textContent="☀️ Modo claro"; }
+    else{ document.body.classList.remove("dark"); themeBtn.textContent="🌙 Modo oscuro"; }
+}
+themeBtn.addEventListener("click",()=>{
+    document.body.classList.toggle("dark");
+    localStorage.setItem("ademoTheme",
+        document.body.classList.contains("dark")?"dark":"light");
+    aplicarTema();
+});
+
+window.onload=()=>{ pintarProductos(); actualizar(); aplicarTema(); };
+</script>
+
+</body>
+</html>
