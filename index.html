@@ -97,20 +97,6 @@ h1, h2, h3 {
     color: var(--fg);
 }
 
-/* BANNER ENVÍO + CONTADOR */
-.banner-envio {
-    background: var(--card-bg);
-    border-left: 4px solid var(--accent);
-    padding: 8px 12px;
-    margin: 0 0 1rem 0;
-    box-shadow: 0 0 10px var(--shadow);
-    font-size: 0.95rem;
-}
-.banner-envio span#orderCount {
-    font-weight: bold;
-    color: var(--accent);
-}
-
 /* GRID PRODUCTOS */
 .grid {
     width: 100%;
@@ -494,7 +480,8 @@ footer a {
 </div>
 
 <!-- PRODUCTOS -->
-<h2>Productos</h2>
+<div class="section" id="productos">
+    <h2>Productos</h2>
 
     <div class="grid" id="listaProductos"></div>
 
@@ -591,7 +578,7 @@ function pintarProductos(){
     cont.innerHTML = "";
 
     productos.forEach((p,i)=>{
-        const badgeHTML = p.badge ? <span class="badge">${p.badge}</span> : "";
+        const badgeHTML = p.badge ? `<span class="badge">${p.badge}</span>` : "";
         cont.innerHTML += `
             <div class="producto">
                 ${badgeHTML}
@@ -637,7 +624,7 @@ function actualizar(){
     let total = 0;
 
     carrito.forEach(p=>{
-        ul.innerHTML += <li>${p.nombre} - ${p.precio.toFixed(2)} €</li>;
+        ul.innerHTML += `<li>${p.nombre} - ${p.precio.toFixed(2)} €</li>`;
         total += p.precio;
     });
 
@@ -658,9 +645,9 @@ function pagarBizum(){
 
     let msg = "Hola, quiero realizar este pedido:\n\n";
     carrito.forEach(p=>{
-        msg += - ${p.nombre} (${p.precio.toFixed(2)} €)\n;
+        msg += `- ${p.nombre} (${p.precio.toFixed(2)} €)\n`;
     });
-    msg += \nTotal: ${document.getElementById("total").innerText} €;
+    msg += `\nTotal: ${document.getElementById("total").innerText} €`;
 
     location.href = "https://wa.me/34649162444?text=" + encodeURIComponent(msg);
 }
@@ -672,7 +659,6 @@ function cerrarSolidNotice(){
 
 // MODAL BIENVENIDA
 function mostrarWelcome(){
-    // Para no molestar siempre, solo la primera vez de la sesión:
     if(!sessionStorage.getItem("welcomeShown")){
         document.getElementById("welcomeOverlay").style.display = "flex";
     }
@@ -688,7 +674,7 @@ function aplicarTemaGuardado(){
     const tema = localStorage.getItem("ademoTheme");
     if(tema === "dark"){
         document.body.classList.add("dark");
-        themeBtn.textContent = "☀ Modo claro";
+        themeBtn.textContent = "☀️ Modo claro";
     }else{
         document.body.classList.remove("dark");
         themeBtn.textContent = "🌙 Modo oscuro";
@@ -705,7 +691,6 @@ themeBtn.addEventListener("click", ()=>{
 window.addEventListener("load", ()=>{
     pintarProductos();
     actualizar();
-    animarPedidos(127);
     aplicarTemaGuardado();
     mostrarWelcome();
 });
